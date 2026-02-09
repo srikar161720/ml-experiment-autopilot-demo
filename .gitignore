@@ -1,2 +1,6 @@
 # OS
 .DS_Store
+
+# Raw Video Files (keep .gitkeep file)
+public/clips/*
+!public/clips/.gitkeep
