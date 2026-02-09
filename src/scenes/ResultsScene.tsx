@@ -18,8 +18,8 @@ export const ResultsScene: React.FC = () => {
                 <MLflowSubScene />
             </Sequence>
 
-            {/* Part 3: Stats (14s) */}
-            <Sequence from={780} durationInFrames={420} premountFor={30}>
+            {/* Part 3: Stats (7s) */}
+            <Sequence from={780} durationInFrames={210} premountFor={30}>
                 <StatsSubScene />
             </Sequence>
         </AbsoluteFill>

@@ -1,4 +1,7 @@
-import { AbsoluteFill, Sequence } from "remotion";
+import { AbsoluteFill } from "remotion";
+import { TransitionSeries, linearTiming } from "@remotion/transitions";
+import { fade } from "@remotion/transitions/fade";
+
 import { TitleScene } from "./scenes/TitleScene";
 import { ProblemScene } from "./scenes/ProblemScene";
 import { SolutionScene } from "./scenes/SolutionScene";
@@ -11,30 +14,83 @@ import { OutroScene } from "./scenes/OutroScene";
 export const DemoVideo: React.FC = () => {
     return (
         <AbsoluteFill>
-            <Sequence from={0} durationInFrames={300} premountFor={30}>
-                <TitleScene />
-            </Sequence>
-            <Sequence from={300} durationInFrames={600} premountFor={30}>
-                <ProblemScene />
-            </Sequence>
-            <Sequence from={900} durationInFrames={600} premountFor={30}>
-                <SolutionScene />
-            </Sequence>
-            <Sequence from={1500} durationInFrames={450} premountFor={30}>
-                <GeminiScene />
-            </Sequence>
-            <Sequence from={1950} durationInFrames={1650} premountFor={30}>
-                <CLIDemoScene />
-            </Sequence>
-            <Sequence from={3600} durationInFrames={1200} premountFor={30}>
-                <ResultsScene />
-            </Sequence>
-            <Sequence from={4800} durationInFrames={300} premountFor={30}>
-                <TechStackScene />
-            </Sequence>
-            <Sequence from={5100} durationInFrames={300} premountFor={30}>
-                <OutroScene />
-            </Sequence>
+            <TransitionSeries>
+                {/* Scene 1: Title (10s + 1s buffer) */}
+                <TransitionSeries.Sequence durationInFrames={330}>
+                    <TitleScene />
+                </TransitionSeries.Sequence>
+
+                <TransitionSeries.Transition
+                    presentation={fade()}
+                    timing={linearTiming({ durationInFrames: 30 })}
+                />
+
+                {/* Scene 2: Problem (20s + 3s buffer) */}
+                <TransitionSeries.Sequence durationInFrames={690}>
+                    <ProblemScene />
+                </TransitionSeries.Sequence>
+
+                <TransitionSeries.Transition
+                    presentation={fade()}
+                    timing={linearTiming({ durationInFrames: 30 })}
+                />
+
+                {/* Scene 3: Solution (20s + 3s buffer) */}
+                <TransitionSeries.Sequence durationInFrames={690}>
+                    <SolutionScene />
+                </TransitionSeries.Sequence>
+
+                <TransitionSeries.Transition
+                    presentation={fade()}
+                    timing={linearTiming({ durationInFrames: 30 })}
+                />
+
+                {/* Scene 4: Gemini (15s + 2s buffer) */}
+                <TransitionSeries.Sequence durationInFrames={510}>
+                    <GeminiScene />
+                </TransitionSeries.Sequence>
+
+                <TransitionSeries.Transition
+                    presentation={fade()}
+                    timing={linearTiming({ durationInFrames: 30 })}
+                />
+
+                {/* Scene 5: CLI Demo (55s Fixed) */}
+                <TransitionSeries.Sequence durationInFrames={1650}>
+                    <CLIDemoScene />
+                </TransitionSeries.Sequence>
+
+                <TransitionSeries.Transition
+                    presentation={fade()}
+                    timing={linearTiming({ durationInFrames: 30 })}
+                />
+
+                {/* Scene 6: Results (33s Fixed - Reduced stats) */}
+                <TransitionSeries.Sequence durationInFrames={990}>
+                    <ResultsScene />
+                </TransitionSeries.Sequence>
+
+                <TransitionSeries.Transition
+                    presentation={fade()}
+                    timing={linearTiming({ durationInFrames: 30 })}
+                />
+
+                {/* Scene 7: Tech Stack (10s + 2s buffer) */}
+                <TransitionSeries.Sequence durationInFrames={360}>
+                    <TechStackScene />
+                </TransitionSeries.Sequence>
+
+                <TransitionSeries.Transition
+                    presentation={fade()}
+                    timing={linearTiming({ durationInFrames: 30 })}
+                />
+
+                {/* Scene 8: Outro (10s + 3s buffer) */}
+                <TransitionSeries.Sequence durationInFrames={390}>
+                    <OutroScene />
+                </TransitionSeries.Sequence>
+
+            </TransitionSeries>
         </AbsoluteFill>
     );
 };

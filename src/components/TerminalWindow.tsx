@@ -14,7 +14,7 @@ export const TerminalWindow: React.FC<TerminalWindowProps> = ({ children, title 
                 display: "flex",
                 flexDirection: "column",
                 backgroundColor: COLORS.TERMINAL_BG,
-                borderRadius: "0 0 12px 12px",
+                borderRadius: "12px",
                 overflow: "hidden",
                 boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
                 ...style,

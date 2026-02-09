@@ -1,4 +1,4 @@
-import { loadFont } from "@remotion/google-fonts/Inter";
+import { loadFont } from "@remotion/google-fonts/Nunito";
 
 export const { fontFamily } = loadFont("normal", {
     weights: ["400", "700"],
