@@ -20,7 +20,7 @@ Key details about the product:
   - `src/execution/` — `DataProfiler`, `CodeGenerator`, `ExperimentRunner` (subprocess), `VisualizationGenerator`
   - `templates/` — Jinja2 templates for sklearn, XGBoost, LightGBM experiments
 - **Autonomous loop:** Data Profiling → Baseline → (Design → Generate Code → Execute → Analyze Results → Generate Hypotheses) × N → Final Report
-- **Demo datasets:** House Prices regression, Titanic classification
+- **Demo datasets:** California Housing regression, Titanic classification
 - **Primary CLI command:**
   ```
   python -m src.main run --data <csv> --target <col> --task <regression|classification> --max-iterations <N> --verbose
@@ -42,7 +42,7 @@ This is a **separate Remotion (React) project** that generates the demo video as
 
 ## 2. Demo Video Overview
 
-The video is 2 minutes 45 seconds (4,950 frames at 30 fps), leaving a 15-second buffer under the 3-minute limit. It consists of 8 scenes: animated title/explanation cards surrounding a **55-second embedded terminal recording** that is the centerpiece of the demo.
+The video is 2 minutes 45 seconds (4,950 frames at 30 fps), leaving a 15-second buffer under the 3-minute limit. It consists of 9 scenes: animated title/explanation cards surrounding a **55-second embedded terminal recording** that is the centerpiece of the demo.
 
 **Tooling:**
 
@@ -66,9 +66,10 @@ ml-autopilot-demo-video/
 │
 ├── public/
 │   ├── clips/
-│   │   ├── regression-demo.mp4        # Hero recording: House Prices regression run (verbose, 3 iterations)
+│   │   ├── regression-demo.mp4        # Hero recording: California Housing regression run (verbose, 3 iterations)
+│   │   ├── report-scroll.mp4          # Scrolling through generated Markdown report
 │   │   ├── mlflow-ui.mp4              # MLflow UI walkthrough in browser
-│   │   └── report-output.mp4          # Scrolling through generated Markdown report
+│   │   └── report-output.mp4          # Full generated Markdown report recording (backup)
 │   └── images/                        # Optional static images (logos, icons)
 │
 ├── src/
@@ -80,13 +81,15 @@ ml-autopilot-demo-video/
 │   │   ├── ProblemScene.tsx            # Scene 2: Pain points of manual ML experimentation
 │   │   ├── SolutionScene.tsx           # Scene 3: Architecture / autonomous loop diagram
 │   │   ├── GeminiScene.tsx             # Scene 4: Thought Signatures explanation
-│   │   ├── CLIDemoScene.tsx            # Scene 5: Embedded terminal recording (hero scene)
-│   │   ├── ResultsScene.tsx            # Scene 6: MLflow UI clip + animated metrics
-│   │   ├── TechStackScene.tsx          # Scene 7: Technology badges grid
-│   │   └─�� OutroScene.tsx              # Scene 8: Closing card with GitHub URL
+│   │   ├── CLIArgumentsScene.tsx       # Scene 5: CLI arguments table
+│   │   ├── CLIDemoScene.tsx            # Scene 6: Embedded terminal recording (hero scene)
+│   │   ├── ResultsScene.tsx            # Scene 7: Report scroll + MLflow UI clip + animated metrics
+│   │   ├── TechStackScene.tsx          # Scene 8: Technology badges grid
+│   │   └── OutroScene.tsx              # Scene 9: Closing card with GitHub URL
 │   │
 │   ├── components/
 │   │   ├── AnimatedBullet.tsx          # Reusable bullet point with slide-in + fade
+│   │   ├── ArgumentRow.tsx             # Animated table row for CLI arguments
 │   │   ├── StatCard.tsx                # Count-up metric card
 │   │   ├── TechBadge.tsx              # Rounded pill badge for tech stack
 │   │   └── TerminalWindow.tsx          # Terminal chrome wrapper (title bar, dots)
@@ -142,6 +145,8 @@ Load **Inter** via `@remotion/google-fonts/Inter` with weights `400` and `700`, 
 | Subtitle | 36 | 400 | `TEXT_SECONDARY` |
 | Body / bullet text | 32 | 400 | `TEXT_SECONDARY` |
 | Stat number | 64 | 700 | `ACCENT` |
+| Table header text | 28 | 700 | `ACCENT` |
+| Table body text | 24 | 400 | `TEXT_SECONDARY` |
 | Badge label | 24 | 700 | `TEXT_PRIMARY` |
 | Muted label | 20 | 400 | `TEXT_MUTED` |
 
@@ -170,13 +175,14 @@ export const SPRING_BOUNCY = { damping: 8 };
 | # | Scene | Time | Frames | Duration | Key Technique |
 |---|-------|------|--------|----------|---------------|
 | 1 | Title | 0:00–0:10 | 0–300 | 300 | `spring()` entrance, `interpolate()` fade |
-| 2 | Problem | 0:10–0:30 | 300–900 | 600 | Staggered `<Sequence>` bullets with slide+fade |
-| 3 | Solution | 0:30–0:50 | 900–1500 | 600 | Animated architecture diagram, spring-in boxes |
-| 4 | Gemini | 0:50–1:05 | 1500–1950 | 450 | Animated comparison cards, glowing thread |
-| 5 | **CLI Demo** | **1:05–2:00** | **1950–3600** | **1650** | **`<Video>` from `@remotion/media`, trimming** |
-| 6 | Results | 2:00–2:20 | 3600–4200 | 600 | Embedded MLflow clip + count-up stat cards |
-| 7 | Tech Stack | 2:20–2:30 | 4200–4500 | 300 | Staggered badge grid fade-in |
-| 8 | Outro | 2:30–2:45 | 4500–4950 | 450 | Spring entrance, fade-out in final 60 frames |
+| 2 | Problem | 0:10–0:25 | 300–750 | 450 | Staggered `<Sequence>` bullets with slide+fade |
+| 3 | Solution | 0:25–0:45 | 750–1350 | 600 | Animated architecture diagram, spring-in boxes |
+| 4 | Gemini | 0:45–1:00 | 1350–1800 | 450 | Animated comparison cards, glowing thread |
+| 5 | CLI Arguments | 1:00–1:10 | 1800–2100 | 300 | Animated argument table with staggered rows |
+| 6 | **CLI Demo** | **1:10–2:05** | **2100–3750** | **1650** | **`<Video>` from `@remotion/media`, trimming** |
+| 7 | Results | 2:05–2:30 | 3750–4500 | 750 | Report scroll clip + MLflow clip + count-up stat cards |
+| 8 | Tech Stack | 2:30–2:38 | 4500–4710 | 210 | Staggered badge grid fade-in |
+| 9 | Outro | 2:38–2:45 | 4710–4950 | 240 | Spring entrance, fade-out in final 60 frames |
 
 ---
 
@@ -191,11 +197,11 @@ export const SPRING_BOUNCY = { damping: 8 };
   - Track label: `"Gemini 3 Hackathon · The Marathon Agent Track"` — `interpolate()` opacity 0→1 over frames 75–120. Font: 20px `TEXT_MUTED`. Positioned near bottom.
 - **Layout:** All centered vertically and horizontally using `AbsoluteFill` + flexbox column.
 
-### Scene 2 — Problem (frames 300–900)
+### Scene 2 — Problem (frames 300–750)
 
 - **Background:** Solid `BG_PRIMARY`.
 - **Heading:** `"The Problem with ML Experimentation"` — fades in over first 30 frames. 72px bold `TEXT_PRIMARY`.
-- **Bullets** (appear staggered, each starting 90 frames after the previous):
+- **Bullets** (appear staggered, each starting 75 frames after the previous):
   1. `"Manual experiment design is slow and biased toward familiar approaches"`
   2. `"Trial-and-error wastes compute without learning from failures"`
   3. `"No reasoning continuity — each experiment starts from scratch"`
@@ -203,7 +209,7 @@ export const SPRING_BOUNCY = { damping: 8 };
 - **Animation per bullet:** Slide from left (`translateX: -40px → 0`) + fade (`opacity: 0 → 1`) over 45 frames using `interpolate()` with `Easing.out(Easing.quad)`. Use `<Sequence from={...}>` for each.
 - **Bullet marker:** Small `ACCENT`-colored square or circle before each line.
 
-### Scene 3 — Solution / Architecture (frames 900–1500)
+### Scene 3 — Solution / Architecture (frames 750–1350)
 
 - **Background:** Solid `BG_PRIMARY`.
 - **Heading:** `"The Autonomous Loop"` — fade in, 72px bold `TEXT_PRIMARY`.
@@ -213,7 +219,7 @@ export const SPRING_BOUNCY = { damping: 8 };
 - **Center label:** `"ExperimentController"` in `ACCENT` with a subtle pulsing opacity (use `interpolate()` with a sine-like input range, **not CSS animation**) after all boxes appear.
 - **Arrows:** Thin lines or `→` characters between boxes, fade in after each box pair is visible.
 
-### Scene 4 — Gemini Integration (frames 1500–1950)
+### Scene 4 — Gemini Integration (frames 1350–1800)
 
 - **Background:** Solid `BG_PRIMARY`.
 - **Heading:** `"Powered by Gemini 3 Thought Signatures"` — fade in, 72px bold `TEXT_PRIMARY`.
@@ -225,12 +231,38 @@ export const SPRING_BOUNCY = { damping: 8 };
   - Right card (bright, `ACCENT_GREEN` tinted border): `"Thought Signatures"` / `"Reasoning compounds across all iterations"`
 - **Below:** Small text: `"Temperature fixed at 1.0 · Multi-turn conversation · Hypothesis-driven"` — fade in last. Font: 20px `TEXT_MUTED`.
 
-### Scene 5 — CLI Demo (frames 1950–3600) ⭐ HERO SCENE
+### Scene 5 — CLI Arguments (frames 1800–2100)
+
+This scene displays all the arguments that can be passed to the autopilot CLI, so viewers understand the tool's interface before seeing it in action.
+
+- **Background:** Solid `BG_PRIMARY`.
+- **Heading:** `"CLI Arguments"` — fade in over 30 frames. 72px bold `TEXT_PRIMARY`. Centered at top with 40px top padding.
+- **Table:** A styled table with 3 columns: **Argument**, **Required?**, **Description**. Centered horizontally, 80% of composition width.
+  - **Table header row:** `ACCENT` background at 20% opacity, text in 28px bold `ACCENT`. Appears immediately with heading.
+  - **Table body rows** (appear staggered, each starting 20 frames after the previous, using `<Sequence from={...}>`):
+
+    | Argument | Required? | Description |
+    |----------|-----------|-------------|
+    | `--data`, `-d` | **Required** | Path to the dataset file (CSV/Parquet) |
+    | `--target`, `-t` | **Required** | Name of the target column to predict |
+    | `--task` | **Required** | Problem type: `classification` or `regression` |
+    | `--constraints`, `-c` | Optional | Path to a Markdown constraints file with user preferences |
+    | `--max-iterations`, `-n` | Optional | Maximum experiment iterations (default: 20) |
+    | `--time-budget` | Optional | Time budget in seconds (default: 3600) |
+    | `--output-dir`, `-o` | Optional | Output directory for results (default: auto-generated) |
+    | `--verbose`, `-v` | Optional | Flag to show detailed Gemini reasoning output |
+    | `--resume` | Optional | Path to a saved state file to resume a previous run |
+
+  - **Row style:** Each row is an `ArgumentRow` component. `CARD_BG` background with `CARD_BORDER` bottom border (1px). Padding 8px 16px. Argument column text in monospace-style font (or use backtick styling with `ACCENT` color), Required column uses bold `ACCENT_GREEN` for "Required" and `TEXT_MUTED` for "Optional", Description column in 24px `TEXT_SECONDARY`.
+  - **Animation per row:** Slide from bottom (`translateY: 20px → 0`) + fade (`opacity: 0 → 1`) over 20 frames using `interpolate()` with `extrapolateRight: 'clamp'`.
+- **Layout:** Flexbox column. Heading at top, table centered below with 24px gap.
+
+### Scene 6 — CLI Demo (frames 2100–3750) ⭐ HERO SCENE
 
 This is the most important scene. It satisfies the Devpost requirement to show the project running on its target platform.
 
 - **Background:** Solid `BG_PRIMARY`.
-- **Heading:** `"Live Demo: House Prices Regression"` — fade in over 30 frames. 48px bold `TEXT_PRIMARY`. Positioned at top, 40px from top edge.
+- **Heading:** `"Live Demo: California Housing Regression"` — fade in over 30 frames. 48px bold `TEXT_PRIMARY`. Positioned at top, 40px from top edge.
 - **Terminal window:** A `TerminalWindow` component wrapper:
   - Title bar: `TERMINAL_BAR` background, 36px height, 3 dots (red/yellow/green circles, 12px diameter) on the left, window title `"python -m src.main run ..."` centered in `TEXT_MUTED`.
   - Body: `TERMINAL_BG` background, rounded bottom corners (12px).
@@ -244,15 +276,19 @@ This is the most important scene. It satisfies the Devpost requirement to show t
   ```
   Use `trimBefore` and `trimAfter` (in frames) to select the best ~53 seconds of the recording. Mute if no audio: `muted`.
 
-### Scene 6 — Results (frames 3600–4200)
+### Scene 7 — Results (frames 3750–4500)
 
-Split into two halves using nested `<Sequence>` blocks.
+Split into three parts using nested `<Sequence>` blocks.
 
-**First half (frames 0–300 local, i.e., 3600–3900 global):**
+**First part (frames 0–250 local, i.e., 3750–4000 global):**
+- Heading: `"Generated Experiment Report"` — 48px bold `TEXT_PRIMARY`.
+- Embed `<Video src={staticFile("clips/report-scroll.mp4")} />` trimmed to ~8 seconds. Wrap in a `TerminalWindow`-like chrome styled as a VS Code or browser window (title bar showing `report.md`).
+
+**Second part (frames 250–500 local, i.e., 4000–4250 global):**
 - Heading: `"Track Every Experiment in MLflow"` — 48px bold `TEXT_PRIMARY`.
 - Embed `<Video src={staticFile("clips/mlflow-ui.mp4")} />` trimmed to ~8 seconds. Wrap in `TerminalWindow`-like chrome styled as a browser window (address bar showing `localhost:5000`).
 
-**Second half (frames 300–600 local, i.e., 3900–4200 global):**
+**Third part (frames 500–750 local, i.e., 4250–4500 global):**
 - Heading: `"Experiment Results"` — 48px bold `TEXT_PRIMARY`.
 - 3 `StatCard` components in a horizontal row:
   - `"Best RMSE"` → count up to `29,847` over 60 frames using `interpolate()` + `Math.round()`.
@@ -260,7 +296,7 @@ Split into two halves using nested `<Sequence>` blocks.
   - `"Experiments Run"` → count up to `4` over 30 frames.
 - Stat cards: `CARD_BG` background, `CARD_BORDER`, number in 64px bold `ACCENT`, label in 20px `TEXT_MUTED`.
 
-### Scene 7 — Tech Stack (frames 4200–4500)
+### Scene 8 — Tech Stack (frames 4500–4710)
 
 - **Background:** Solid `BG_PRIMARY`.
 - **Heading:** `"Built With"` — fade in, 72px bold `TEXT_PRIMARY`.
@@ -275,14 +311,14 @@ Split into two halves using nested `<Sequence>` blocks.
   8. `"📝 Jinja2 Templates"`
 - **Badge style:** `CARD_BG` background, `CARD_BORDER`, rounded-full (pill shape, `borderRadius: 9999px`), padding `8px 20px`, font 24px bold `TEXT_PRIMARY`.
 
-### Scene 8 — Outro (frames 4500–4950)
+### Scene 9 — Outro (frames 4710–4950)
 
 - **Background:** Linear gradient from `BG_PRIMARY` (top) to `BG_SECONDARY` (bottom). Implement with a `<div>` and inline `background: linear-gradient(...)` — this is static CSS, not an animation, so it is safe.
 - **Elements (all centered):**
   - Title: `"ML Experiment Autopilot"` — `spring()` with `SPRING_SMOOTH`, 80px bold `ACCENT`.
   - GitHub URL: `"github.com/srikar161720/ml-experiment-autopilot"` — `interpolate()` fade-in starting at local frame 30. Font: 28px `TEXT_SECONDARY`.
   - Hackathon label: `"Gemini 3 Hackathon 2026 · The Marathon Agent Track"` — fade-in at local frame 60. Font: 22px `TEXT_MUTED`.
-- **Exit animation:** In the final 60 frames (local frames 390–450), fade all elements to opacity 0 and scale to 0.98 using `interpolate()`.
+- **Exit animation:** In the final 60 frames (local frames 180–240), fade all elements to opacity 0 and scale to 0.98 using `interpolate()`.
 
 ---
 
@@ -292,15 +328,17 @@ Record these **before** starting the Remotion build. Use a dark terminal theme, 
 
 | Filename | Command / Action | Target Duration | Notes |
 |----------|-----------------|-----------------|-------|
-| `regression-demo.mp4` | `python -m src.main run --data data/sample/house_prices_train.csv --target SalePrice --task regression --constraints data/sample/constraints.md --max-iterations 3 --verbose` | 60–90 sec (will be trimmed to ~53 sec) | The hero clip. Capture all phases: profiling, baseline, iterations, summary. |
+| `regression-demo.mp4` | `python -m src.main run --data data/sample/california_housing.csv --target MedHouseVal --task regression --max-iterations 3 --verbose` | 60–90 sec (will be trimmed to ~53 sec) | The hero clip. Capture all phases: profiling, baseline, iterations, summary. Uses the California Housing dataset. |
+| `report-scroll.mp4` | Open the generated Markdown report (from `outputs/reports/`) in VS Code or a browser and slowly scroll through it top-to-bottom | 12–18 sec (trimmed to ~8 sec) | Show the report title, summary section, iteration details, and final recommendations. Scroll at a readable pace. |
 | `mlflow-ui.mp4` | Launch `mlflow ui --backend-store-uri file:./outputs/mlruns`, browse experiments in browser | 15–20 sec (trimmed to ~8 sec) | Show experiment list, click into one run, show metrics. |
-| `report-output.mp4` | Open the generated Markdown report in VS Code or a browser and scroll through it | 10–15 sec | Optional — can be used as an alternative in the Results scene. |
+| `report-output.mp4` | Open the generated Markdown report in VS Code or a browser and scroll through it | 10–15 sec | Backup recording — can be used as an alternative to `report-scroll.mp4` if needed. |
 
 **Recording tips:**
 - Use OBS Studio or QuickTime for screen capture.
 - Set terminal to a dark theme (e.g., Dracula, Tokyo Night) — it should visually match the `TERMINAL_BG` color.
 - Clear the terminal before recording. The first visible thing should be the command being typed or run.
 - Rich-formatted output will render automatically since the CLI uses the Rich library.
+- For the report scroll recording, use a dark-themed editor or Markdown preview. Scroll smoothly and slowly enough for text to be legible in the final video.
 
 ---
 
@@ -334,13 +372,14 @@ import { AbsoluteFill, Sequence } from "remotion";
 export const DemoVideo: React.FC = () => (
   <AbsoluteFill>
     <Sequence from={0} durationInFrames={300} premountFor={30}><TitleScene /></Sequence>
-    <Sequence from={300} durationInFrames={600} premountFor={30}><ProblemScene /></Sequence>
-    <Sequence from={900} durationInFrames={600} premountFor={30}><SolutionScene /></Sequence>
-    <Sequence from={1500} durationInFrames={450} premountFor={30}><GeminiScene /></Sequence>
-    <Sequence from={1950} durationInFrames={1650} premountFor={30}><CLIDemoScene /></Sequence>
-    <Sequence from={3600} durationInFrames={600} premountFor={30}><ResultsScene /></Sequence>
-    <Sequence from={4200} durationInFrames={300} premountFor={30}><TechStackScene /></Sequence>
-    <Sequence from={4500} durationInFrames={450} premountFor={30}><OutroScene /></Sequence>
+    <Sequence from={300} durationInFrames={450} premountFor={30}><ProblemScene /></Sequence>
+    <Sequence from={750} durationInFrames={600} premountFor={30}><SolutionScene /></Sequence>
+    <Sequence from={1350} durationInFrames={450} premountFor={30}><GeminiScene /></Sequence>
+    <Sequence from={1800} durationInFrames={300} premountFor={30}><CLIArgumentsScene /></Sequence>
+    <Sequence from={2100} durationInFrames={1650} premountFor={30}><CLIDemoScene /></Sequence>
+    <Sequence from={3750} durationInFrames={750} premountFor={30}><ResultsScene /></Sequence>
+    <Sequence from={4500} durationInFrames={210} premountFor={30}><TechStackScene /></Sequence>
+    <Sequence from={4710} durationInFrames={240} premountFor={30}><OutroScene /></Sequence>
   </AbsoluteFill>
 );
 ```
@@ -411,9 +450,10 @@ Use `fontFamily` in all component styles: `style={{ fontFamily }}`.
 ## 9. Build Phases & Progress Checklist
 
 ### Phase 0 — Pre-Production
-- [ ] Record `regression-demo.mp4` (House Prices regression, verbose, 3 iterations)
+- [ ] Record `regression-demo.mp4` (California Housing regression, verbose, 3 iterations)
+- [ ] Record `report-scroll.mp4` (generated Markdown report scroll-through)
 - [ ] Record `mlflow-ui.mp4` (MLflow UI walkthrough)
-- [ ] Record `report-output.mp4` (generated report scroll) — optional
+- [ ] Record `report-output.mp4` (full report recording — backup)
 - [ ] Review clips, note best start/end timestamps for trimming
 
 ### Phase 1 — Project Setup
@@ -430,10 +470,11 @@ Use `fontFamily` in all component styles: `style={{ fontFamily }}`.
 - [ ] Scene 2: `ProblemScene.tsx` + `AnimatedBullet.tsx`
 - [ ] Scene 3: `SolutionScene.tsx`
 - [ ] Scene 4: `GeminiScene.tsx`
-- [ ] Scene 5: `CLIDemoScene.tsx` + `TerminalWindow.tsx` ⭐
-- [ ] Scene 6: `ResultsScene.tsx` + `StatCard.tsx`
-- [ ] Scene 7: `TechStackScene.tsx` + `TechBadge.tsx`
-- [ ] Scene 8: `OutroScene.tsx`
+- [ ] Scene 5: `CLIArgumentsScene.tsx` + `ArgumentRow.tsx`
+- [ ] Scene 6: `CLIDemoScene.tsx` + `TerminalWindow.tsx` ⭐
+- [ ] Scene 7: `ResultsScene.tsx` + `StatCard.tsx`
+- [ ] Scene 8: `TechStackScene.tsx` + `TechBadge.tsx`
+- [ ] Scene 9: `OutroScene.tsx`
 
 ### Phase 3 — Compose & Integrate
 - [ ] Create `src/DemoVideo.tsx` composing all scenes with `<Sequence>`
