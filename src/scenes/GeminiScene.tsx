@@ -31,9 +31,11 @@ export const GeminiScene: React.FC = () => {
                     opacity: titleOpacity,
                     position: "absolute",
                     top: 80,
+                    textAlign: "center",
+                    width: "100%",
                 }}
             >
-                Powered by Gemini 3 Thought Signatures
+                Powered by<br />Gemini 3 Thought Signatures
             </div>
 
             <div style={{ marginTop: 100, width: "100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>

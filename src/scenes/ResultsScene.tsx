@@ -1,27 +1,37 @@
-import { AbsoluteFill, Sequence, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { Video } from "@remotion/media";
-import { COLORS } from "../lib/constants";
+import { COLORS, FONT_SIZES } from "../lib/constants";
 import { fontFamily } from "../lib/fonts";
 import { TerminalWindow } from "../components/TerminalWindow";
 import { StatCard } from "../components/StatCard";
 
+import { TransitionSeries, linearTiming } from "@remotion/transitions";
+import { fade } from "@remotion/transitions/fade";
+
 export const ResultsScene: React.FC = () => {
     return (
         <AbsoluteFill style={{ backgroundColor: COLORS.BG_PRIMARY, fontFamily }}>
-            {/* Part 1: Report Scroll (15s) */}
-            <Sequence from={0} durationInFrames={450} premountFor={30}>
-                <ReportSubScene />
-            </Sequence>
+            <TransitionSeries>
+                {/* Part 1: Report Scroll (15s) */}
+                <TransitionSeries.Sequence durationInFrames={450}>
+                    <ReportSubScene />
+                </TransitionSeries.Sequence>
 
-            {/* Part 2: MLflow UI (11s) */}
-            <Sequence from={450} durationInFrames={330} premountFor={30}>
-                <MLflowSubScene />
-            </Sequence>
+                <TransitionSeries.Transition
+                    presentation={fade()}
+                    timing={linearTiming({ durationInFrames: 30 })}
+                />
 
-            {/* Part 3: Stats (7s) */}
-            <Sequence from={780} durationInFrames={210} premountFor={30}>
-                <StatsSubScene />
-            </Sequence>
+                {/* Part 2: MLflow UI (11s) */}
+                <TransitionSeries.Sequence durationInFrames={330}>
+                    <MLflowSubScene />
+                </TransitionSeries.Sequence>
+
+                {/* Part 3: Stats (7s + 30f compensation for transition overlap) */}
+                <TransitionSeries.Sequence durationInFrames={240}>
+                    <StatsSubScene />
+                </TransitionSeries.Sequence>
+            </TransitionSeries>
         </AbsoluteFill>
     );
 };
@@ -83,7 +93,7 @@ const StatsSubScene: React.FC = () => {
 
     return (
         <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-            <div style={{ fontSize: 48, fontWeight: 700, color: COLORS.TEXT_PRIMARY, opacity: titleOpacity, marginBottom: 80 }}>
+            <div style={{ fontSize: FONT_SIZES.SCENE_HEADING, fontWeight: 700, color: COLORS.TEXT_PRIMARY, opacity: titleOpacity, marginBottom: 80 }}>
                 Experiment Results
             </div>
             <div style={{ display: "flex", gap: 60 }}>

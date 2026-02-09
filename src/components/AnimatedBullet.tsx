@@ -36,15 +36,21 @@ export const AnimatedBullet: React.FC<AnimatedBulletProps> = ({ text }) => {
                 maxWidth: "1400px",
             }}
         >
-            <div
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke={COLORS.ACCENT}
+                strokeWidth={3}
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 style={{
-                    width: "12px",
-                    height: "12px",
-                    backgroundColor: COLORS.ACCENT,
-                    borderRadius: "2px",
+                    width: "30px",
+                    height: "30px",
                     flexShrink: 0,
                 }}
-            />
+            >
+                <path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
             <div>{text}</div>
         </div>
     );

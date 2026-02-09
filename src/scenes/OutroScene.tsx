@@ -45,12 +45,13 @@ export const OutroScene: React.FC = () => {
         >
             <div
                 style={{
-                    fontSize: 80, // Explicitly 80px per spec
+                    fontSize: 140, // Increased from 80
                     fontWeight: 700,
                     color: COLORS.ACCENT,
                     transform: `translateY(${titleTranslateY}px)`,
                     textAlign: "center",
                     marginBottom: 40,
+                    whiteSpace: "nowrap",
                 }}
             >
                 ML Experiment Autopilot
@@ -58,11 +59,12 @@ export const OutroScene: React.FC = () => {
 
             <div
                 style={{
-                    fontSize: 28,
+                    fontSize: 48, // Increased from 28
                     fontWeight: 400,
                     color: COLORS.TEXT_SECONDARY,
                     opacity: githubOpacity,
                     marginBottom: 80,
+                    whiteSpace: "nowrap",
                 }}
             >
                 github.com/srikar161720/ml-experiment-autopilot

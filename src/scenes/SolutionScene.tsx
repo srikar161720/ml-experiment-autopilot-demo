@@ -1,3 +1,4 @@
+import React from "react";
 import { AbsoluteFill, Sequence, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { COLORS, FONT_SIZES, SPRING_BOUNCY } from "../lib/constants";
 import { fontFamily } from "../lib/fonts";
@@ -76,19 +77,120 @@ export const SolutionScene: React.FC = () => {
                     const x = Math.cos(angle) * RADIUS_X;
                     const y = Math.sin(angle) * RADIUS_Y;
 
+                    const nextIndex = (i + 1) % STEPS.length;
+                    const nextAngle = (nextIndex * (360 / STEPS.length) - 90) * (Math.PI / 180);
+                    const nextX = Math.cos(nextAngle) * RADIUS_X;
+                    const nextY = Math.sin(nextAngle) * RADIUS_Y;
+
                     return (
-                        <Sequence key={i} from={i * 60} premountFor={30}>
-                            <Box
-                                text={step}
-                                x={x}
-                                y={y}
-                                delay={0} // Sequence handles the delay
-                            />
-                        </Sequence>
+                        <React.Fragment key={i}>
+                            <Sequence from={i * 60} premountFor={30}>
+                                <Box
+                                    text={step}
+                                    x={x}
+                                    y={y}
+                                    delay={0}
+                                />
+                            </Sequence>
+
+                            {/* Path to next box */}
+                            <Sequence from={i * 60 + 30} premountFor={30} layout="none">
+                                <CurvedPath
+                                    startX={x}
+                                    startY={y}
+                                    endX={nextX}
+                                    endY={nextY}
+                                    index={i}
+                                    totalSteps={STEPS.length}
+                                />
+                            </Sequence>
+                        </React.Fragment>
                     );
                 })}
             </div>
         </AbsoluteFill>
+    );
+};
+
+const CurvedPath: React.FC<{
+    startX: number;
+    startY: number;
+    endX: number;
+    endY: number;
+    index: number;
+    totalSteps: number;
+}> = ({ startX, startY, endX, endY, index, totalSteps }) => {
+    const frame = useCurrentFrame();
+
+    // Calculate control point for a nice curve outward
+    // We use the midpoint angle between start and end
+    const angleStart = (index * (360 / totalSteps) - 90) * (Math.PI / 180);
+    const angleEnd = ((index + 1) * (360 / totalSteps) - 90) * (Math.PI / 180);
+
+    // Handle wrap-around for the last element's angle calculation if needed, 
+    // but simple average works fine for layout here.
+    // Actually, for the last item connecting to first, we need to be careful with simple average 
+    // if we want strict radial outward, but for simplicity:
+    const midX = (startX + endX) / 2;
+    const midY = (startY + endY) / 2;
+
+    // Push the control point outward from center (0,0) based on midpoint vector
+    // A simple way is to scale the midpoint vector
+    const factor = 1.5;
+    const cx = midX * factor;
+    const cy = midY * factor;
+
+    // Center coordinates in the container are (width/2, height/2), but our x/y are relative to center
+    // Only SVG needs absolute coordinates if it's strictly positioned, 
+    // but we can position the SVG absolutely at center and use relative coords.
+
+    // Let's assume SVG is centered at 50% 50%
+    const pathData = `M ${startX} ${startY} Q ${cx} ${cy} ${endX} ${endY}`;
+
+    const progress = interpolate(frame, [0, 20], [0, 1], {
+        extrapolateRight: "clamp",
+    });
+
+    return (
+        <svg
+            style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                overflow: "visible",
+                zIndex: 0, // Behind boxes
+                width: 1, // Minimize layout impact
+                height: 1,
+            }}
+        >
+            <path
+                d={pathData}
+                fill="none"
+                stroke={COLORS.ACCENT}
+                strokeWidth={4}
+                strokeDasharray={1000}
+                strokeDashoffset={1000 * (1 - progress)}
+                strokeLinecap="round"
+                style={{
+                    opacity: 0.6,
+                    filter: `drop-shadow(0 0 8px ${COLORS.ACCENT})`
+                }}
+            />
+            {/* Arrowhead at the end */}
+            <path
+                d="M -10 -5 L 0 0 L -10 5"
+                fill="none"
+                stroke={COLORS.ACCENT}
+                strokeWidth={4}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{
+                    opacity: progress >= 0.9 ? 1 : 0,
+                    transform: `translate(${endX}px, ${endY}px) rotate(${Math.atan2(endY - cy, endX - cx) * 180 / Math.PI}deg)`,
+                    transition: "opacity 0.2s"
+                }}
+            />
+        </svg>
     );
 };
 
@@ -125,6 +227,7 @@ const Box: React.FC<{ text: string; x: number; y: number; delay: number }> = ({ 
                 alignItems: "center",
                 justifyContent: "center",
                 padding: "16px 24px",
+                zIndex: 1,
                 boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
                 fontSize: 24,
                 fontWeight: 600,
