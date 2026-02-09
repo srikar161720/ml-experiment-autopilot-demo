@@ -42,7 +42,7 @@ This is a **separate Remotion (React) project** that generates the demo video as
 
 ## 2. Demo Video Overview
 
-The video is 2 minutes 45 seconds (4,950 frames at 30 fps), leaving a 15-second buffer under the 3-minute limit. It consists of 8 scenes: animated title/explanation cards surrounding a **55-second embedded terminal recording** that is the centerpiece of the demo. The CLI arguments are visible in the terminal recording itself via the autopilot's built-in help screen.
+The video is 3 minutes 0 seconds (5,400 frames at 30 fps), using the full 3-minute limit. It consists of 8 scenes: animated title/explanation cards surrounding a **55-second embedded terminal recording** that is the centerpiece of the demo, plus a **15-second report scroll** clip and an **11-second MLflow UI** clip in the results scene. All clips have been manually pre-trimmed and require no additional trimming. The CLI arguments are visible in the terminal recording itself via the autopilot's built-in help screen.
 
 **Tooling:**
 
@@ -66,10 +66,9 @@ ml-autopilot-demo-video/
 │
 ├── public/
 │   ├── clips/
-│   │   ├── regression-demo.mp4        # Hero recording: California Housing regression run (verbose, 3 iterations)
-│   │   ├── report-scroll.mp4          # Scrolling through generated Markdown report
-│   │   ├── mlflow-ui.mp4              # MLflow UI walkthrough in browser
-│   │   └── report-output.mp4          # Full generated Markdown report recording (backup)
+│   │   ├── regression-demo.mp4        # Hero recording: California Housing regression run (verbose, 3 iterations) [55 sec, pre-trimmed]
+│   │   ├── report-scroll.mp4          # Scrolling through generated Markdown report [15 sec, pre-trimmed]
+│   │   └── mlflow-ui.mp4              # MLflow UI walkthrough in browser [11 sec, pre-trimmed]
 │   └── images/                        # Optional static images (logos, icons)
 │
 ├── src/
@@ -111,8 +110,8 @@ ml-autopilot-demo-video/
 | Width | 1920 |
 | Height | 1080 |
 | FPS | 30 |
-| Total frames | 4950 |
-| Total duration | 2:45 |
+| Total frames | 5400 |
+| Total duration | 3:00 |
 | Composition ID | `MLAutopilotDemo` |
 
 ### Color Palette
@@ -129,8 +128,8 @@ ml-autopilot-demo-video/
 | `TEXT_MUTED` | `#888888` | Tertiary labels, timestamps |
 | `CARD_BG` | `#1e1e3a` | Card/box background |
 | `CARD_BORDER` | `#4fc3f7` at 40% opacity | Card borders |
-| `TERMINAL_BG` | `#1a1b26` | Terminal window body |
-| `TERMINAL_BAR` | `#2a2b3a` | Terminal title bar |
+| `TERMINAL_BG` | `#1e1e1e` | Terminal window body |
+| `TERMINAL_BAR` | `#262626` | Terminal title bar |
 
 ### Typography
 
@@ -174,10 +173,10 @@ export const SPRING_BOUNCY = { damping: 8 };
 | 2 | Problem | 0:10–0:30 | 300–900 | 600 | Staggered `<Sequence>` bullets with slide+fade |
 | 3 | Solution | 0:30–0:50 | 900–1500 | 600 | Animated architecture diagram, spring-in boxes |
 | 4 | Gemini | 0:50–1:05 | 1500–1950 | 450 | Animated comparison cards, glowing thread |
-| 5 | **CLI Demo** | **1:05–2:00** | **1950–3600** | **1650** | **`<Video>` from `@remotion/media`, trimming** |
-| 6 | Results | 2:00–2:25 | 3600–4350 | 750 | Report scroll clip + MLflow clip + count-up stat cards |
-| 7 | Tech Stack | 2:25–2:35 | 4350–4650 | 300 | Staggered badge grid fade-in |
-| 8 | Outro | 2:35–2:45 | 4650–4950 | 300 | Spring entrance, fade-out in final 60 frames |
+| 5 | **CLI Demo** | **1:05–2:00** | **1950–3600** | **1650** | **`<Video>` embed, pre-trimmed clip (55 sec)** |
+| 6 | Results | 2:00–2:40 | 3600–4800 | 1200 | Report scroll clip (15 sec) + MLflow clip (11 sec) + count-up stat cards (14 sec) |
+| 7 | Tech Stack | 2:40–2:50 | 4800–5100 | 300 | Staggered badge grid fade-in |
+| 8 | Outro | 2:50–3:00 | 5100–5400 | 300 | Spring entrance, fade-out in final 60 frames |
 
 ---
 
@@ -197,10 +196,11 @@ export const SPRING_BOUNCY = { damping: 8 };
 - **Background:** Solid `BG_PRIMARY`.
 - **Heading:** `"The Problem with ML Experimentation"` — fades in over first 30 frames. 72px bold `TEXT_PRIMARY`.
 - **Bullets** (appear staggered, each starting 90 frames after the previous):
-  1. `"Manual experiment design is slow and biased toward familiar approaches"`
-  2. `"Trial-and-error wastes compute without learning from failures"`
-  3. `"No reasoning continuity — each experiment starts from scratch"`
-  4. `"Results analysis is ad-hoc, missing cross-iteration patterns"`
+  1. `"Traditional AutoML tools are Black boxes with no hypothesis testing"`
+  2. `"Manual experiment design is slow and biased toward familiar approaches"`
+  3. `"Trial-and-error wastes compute without learning from failures"`
+  4. `"No reasoning continuity — each experiment starts from scratch"`
+  5. `"Results analysis is ad-hoc, missing cross-iteration patterns"`
 - **Animation per bullet:** Slide from left (`translateX: -40px → 0`) + fade (`opacity: 0 → 1`) over 45 frames using `interpolate()` with `Easing.out(Easing.quad)`. Use `<Sequence from={...}>` for each.
 - **Bullet marker:** Small `ACCENT`-colored square or circle before each line.
 
@@ -208,8 +208,8 @@ export const SPRING_BOUNCY = { damping: 8 };
 
 - **Background:** Solid `BG_PRIMARY`.
 - **Heading:** `"The Autonomous Loop"` — fade in, 72px bold `TEXT_PRIMARY`.
-- **Diagram:** 5 boxes arranged in a circular or rounded-rectangle loop:
-  1. `"📊 Data Profiler"` → `"🧠 Experiment Designer"` → `"⚙️ Code Gen + Runner"` → `"📈 Results Analyzer"` → `"💡 Hypothesis Generator"` → (arrow back to #2)
+- **Diagram:** 6 boxes arranged in a circular or rounded-rectangle loop:
+  1. `"📊 Data Profiler"` → `"🧠 Experiment Designer"` → `"⚙️ Code Generator"` → `"🏃 Experiment Runner"` → `"📈 Results Analyzer"` → `"💡 Hypothesis Generator"` → (arrow back to #2)
 - **Box style:** `CARD_BG` background, `CARD_BORDER` border, rounded corners (12px), padding 16px 24px. Each box `spring()`-animates in (scale 0→1) staggered by 60 frames.
 - **Center label:** `"ExperimentController"` in `ACCENT` with a subtle pulsing opacity (use `interpolate()` with a sine-like input range, **not CSS animation**) after all boxes appear.
 - **Arrows:** Thin lines or `→` characters between boxes, fade in after each box pair is visible.
@@ -236,36 +236,48 @@ This is the most important scene. It satisfies the Devpost requirement to show t
   - Title bar: `TERMINAL_BAR` background, 36px height, 3 dots (red/yellow/green circles, 12px diameter) on the left, window title `"python -m src.main run ..."` centered in `TEXT_MUTED`.
   - Body: `TERMINAL_BG` background, rounded bottom corners (12px).
   - Width: 88% of composition width, centered horizontally. Height: fill remaining space below heading with 40px padding.
-- **Video embed:** `<Video>` from `@remotion/media`:
+- **Video embed:** `<Video>` from `@remotion/media`. The clip is pre-trimmed to exactly 55 seconds — no `trimBefore` or `trimAfter` needed:
   ```tsx
   <Video
     src={staticFile("clips/regression-demo.mp4")}
+    muted
     style={{ width: "100%", height: "100%", objectFit: "contain" }}
   />
   ```
-  Use `trimBefore` and `trimAfter` (in frames) to select the best ~53 seconds of the recording. Mute if no audio: `muted`.
 
-### Scene 6 — Results (frames 3600–4350)
+### Scene 6 — Results (frames 3600–4800)
 
 Split into three parts using nested `<Sequence>` blocks.
 
-**First part (frames 0–250 local, i.e., 3600–3850 global):**
+**First part (frames 0–450 local, i.e., 3600–4050 global):**
 - Heading: `"Generated Experiment Report"` — 48px bold `TEXT_PRIMARY`.
-- Embed `<Video src={staticFile("clips/report-scroll.mp4")} />` trimmed to ~8 seconds. Wrap in a `TerminalWindow`-like chrome styled as a VS Code or browser window (title bar showing `report.md`).
+- Embed `<Video src={staticFile("clips/report-scroll.mp4")} />` — the clip is pre-trimmed to exactly 15 seconds, no `trimBefore` or `trimAfter` needed. Do **not** wrap the clip in any `TerminalWindow`-like chrome or window wrapper. Simply embed the video directly with 12px rounded corners on all 4 corners:
+  ```tsx
+  <Video
+    src={staticFile("clips/report-scroll.mp4")}
+    muted
+    style={{
+      width: "88%",
+      height: "auto",
+      objectFit: "contain",
+      borderRadius: "12px",
+    }}
+  />
+  ```
 
-**Second part (frames 250–500 local, i.e., 3850–4100 global):**
+**Second part (frames 450–780 local, i.e., 4050–4380 global):**
 - Heading: `"Track Every Experiment in MLflow"` — 48px bold `TEXT_PRIMARY`.
-- Embed `<Video src={staticFile("clips/mlflow-ui.mp4")} />` trimmed to ~8 seconds. Wrap in `TerminalWindow`-like chrome styled as a browser window (address bar showing `localhost:5000`).
+- Embed `<Video src={staticFile("clips/mlflow-ui.mp4")} />` — the clip is pre-trimmed to exactly 11 seconds, no `trimBefore` or `trimAfter` needed. Wrap in `TerminalWindow`-like chrome styled as a browser window (address bar showing `http://127.0.0.1:5000`).
 
-**Third part (frames 500–750 local, i.e., 4100–4350 global):**
+**Third part (frames 780–1200 local, i.e., 4380–4800 global):**
 - Heading: `"Experiment Results"` — 48px bold `TEXT_PRIMARY`.
 - 3 `StatCard` components in a horizontal row:
-  - `"Best RMSE"` → count up to `29,847` over 60 frames using `interpolate()` + `Math.round()`.
-  - `"Improvement"` → count up to `23%` over 60 frames.
-  - `"Experiments Run"` → count up to `4` over 30 frames.
+  - `"Best RMSE"` → count up to `0.133` over 60 frames using `interpolate()` (display with 3 decimal places, e.g., `value.toFixed(3)`).
+  - `"Improvement"` → count up to `82.1%` over 60 frames using `interpolate()` (display with 1 decimal place + `%`).
+  - `"Experiments Run"` → count up to `3` over 30 frames using `interpolate()` + `Math.round()`.
 - Stat cards: `CARD_BG` background, `CARD_BORDER`, number in 64px bold `ACCENT`, label in 20px `TEXT_MUTED`.
 
-### Scene 7 — Tech Stack (frames 4350–4650)
+### Scene 7 — Tech Stack (frames 4800–5100)
 
 - **Background:** Solid `BG_PRIMARY`.
 - **Heading:** `"Built With"` — fade in, 72px bold `TEXT_PRIMARY`.
@@ -280,7 +292,7 @@ Split into three parts using nested `<Sequence>` blocks.
   8. `"📝 Jinja2 Templates"`
 - **Badge style:** `CARD_BG` background, `CARD_BORDER`, rounded-full (pill shape, `borderRadius: 9999px`), padding `8px 20px`, font 24px bold `TEXT_PRIMARY`.
 
-### Scene 8 — Outro (frames 4650–4950)
+### Scene 8 — Outro (frames 5100–5400)
 
 - **Background:** Linear gradient from `BG_PRIMARY` (top) to `BG_SECONDARY` (bottom). Implement with a `<div>` and inline `background: linear-gradient(...)` — this is static CSS, not an animation, so it is safe.
 - **Elements (all centered):**
@@ -293,14 +305,13 @@ Split into three parts using nested `<Sequence>` blocks.
 
 ## 7. Pre-Recorded Clip Requirements
 
-Record these **before** starting the Remotion build. Use a dark terminal theme, font size 16–18pt, 1920×1080 screen resolution.
+All clips have been manually pre-trimmed and are ready to use as-is. No additional trimming is needed in Remotion. Use a dark terminal theme, font size 16–18pt, 1920×1080 screen resolution.
 
-| Filename | Command / Action | Target Duration | Notes |
-|----------|-----------------|-----------------|-------|
-| `regression-demo.mp4` | `python -m src.main run --data data/sample/california_housing.csv --target MedHouseVal --task regression --max-iterations 3 --verbose` | 60–90 sec (will be trimmed to ~53 sec) | The hero clip. Capture all phases: profiling, baseline, iterations, summary. Uses the California Housing dataset. The CLI help screen with all arguments is visible at the start of the recording. |
-| `report-scroll.mp4` | Open the generated Markdown report (from `outputs/reports/`) in VS Code or a browser and slowly scroll through it top-to-bottom | 12–18 sec (trimmed to ~8 sec) | Show the report title, summary section, iteration details, and final recommendations. Scroll at a readable pace. |
-| `mlflow-ui.mp4` | Launch `mlflow ui --backend-store-uri file:./outputs/mlruns`, browse experiments in browser | 15–20 sec (trimmed to ~8 sec) | Show experiment list, click into one run, show metrics. |
-| `report-output.mp4` | Open the generated Markdown report in VS Code or a browser and scroll through it | 10–15 sec | Backup recording — can be used as an alternative to `report-scroll.mp4` if needed. |
+| Filename | Command / Action | Duration | Notes |
+|----------|-----------------|----------|-------|
+| `regression-demo.mp4` | `python -m src.main run --data data/sample/california_housing.csv --target MedHouseVal --task regression --max-iterations 3 --verbose` | 55 sec (pre-trimmed) | The hero clip. Captures all phases: profiling, baseline, iterations, summary. Uses the California Housing dataset. The CLI help screen with all arguments is visible at the start of the recording. |
+| `report-scroll.mp4` | Open the generated Markdown report (from `outputs/reports/`) in VS Code or a browser and slowly scroll through it top-to-bottom | 15 sec (pre-trimmed) | Shows the report title, summary section, iteration details, and final recommendations. Already includes all necessary window elements in the clip itself. |
+| `mlflow-ui.mp4` | Launch `mlflow ui --backend-store-uri file:./outputs/mlruns`, browse experiments in browser | 11 sec (pre-trimmed) | Shows experiment list, click into one run, show metrics. |
 
 **Recording tips:**
 - Use OBS Studio or QuickTime for screen capture.
@@ -325,7 +336,7 @@ export const RemotionRoot = () => (
   <Composition
     id="MLAutopilotDemo"
     component={DemoVideo}
-    durationInFrames={4950}
+    durationInFrames={5400}
     fps={30}
     width={1920}
     height={1080}
@@ -345,9 +356,9 @@ export const DemoVideo: React.FC = () => (
     <Sequence from={900} durationInFrames={600} premountFor={30}><SolutionScene /></Sequence>
     <Sequence from={1500} durationInFrames={450} premountFor={30}><GeminiScene /></Sequence>
     <Sequence from={1950} durationInFrames={1650} premountFor={30}><CLIDemoScene /></Sequence>
-    <Sequence from={3600} durationInFrames={750} premountFor={30}><ResultsScene /></Sequence>
-    <Sequence from={4350} durationInFrames={300} premountFor={30}><TechStackScene /></Sequence>
-    <Sequence from={4650} durationInFrames={300} premountFor={30}><OutroScene /></Sequence>
+    <Sequence from={3600} durationInFrames={1200} premountFor={30}><ResultsScene /></Sequence>
+    <Sequence from={4800} durationInFrames={300} premountFor={30}><TechStackScene /></Sequence>
+    <Sequence from={5100} durationInFrames={300} premountFor={30}><OutroScene /></Sequence>
   </AbsoluteFill>
 );
 ```
@@ -388,13 +399,10 @@ return <span>{Math.round(value).toLocaleString()}</span>;
 
 ```tsx
 import { Video } from "@remotion/media";
-import { staticFile, useVideoConfig } from "remotion";
+import { staticFile } from "remotion";
 
-const { fps } = useVideoConfig();
 <Video
   src={staticFile("clips/regression-demo.mp4")}
-  trimBefore={2 * fps}
-  trimAfter={55 * fps}
   muted
   style={{ width: "100%", height: "100%", objectFit: "contain" }}
 />
@@ -418,11 +426,10 @@ Use `fontFamily` in all component styles: `style={{ fontFamily }}`.
 ## 9. Build Phases & Progress Checklist
 
 ### Phase 0 — Pre-Production
-- [ ] Record `regression-demo.mp4` (California Housing regression, verbose, 3 iterations — includes help screen with CLI arguments)
-- [ ] Record `report-scroll.mp4` (generated Markdown report scroll-through)
-- [ ] Record `mlflow-ui.mp4` (MLflow UI walkthrough)
-- [ ] Record `report-output.mp4` (full report recording — backup)
-- [ ] Review clips, note best start/end timestamps for trimming
+- [x] Record `regression-demo.mp4` (California Housing regression, verbose, 3 iterations — includes help screen with CLI arguments) [55 sec, pre-trimmed]
+- [x] Record `report-scroll.mp4` (generated Markdown report scroll-through) [15 sec, pre-trimmed]
+- [x] Record `mlflow-ui.mp4` (MLflow UI walkthrough) [11 sec, pre-trimmed]
+- [x] All clips manually pre-trimmed — no additional trimming needed in Remotion
 
 ### Phase 1 — Project Setup
 - [ ] Scaffold project: `npx create-video@latest` (Blank template, TailwindCSS, Skills)
@@ -447,7 +454,6 @@ Use `fontFamily` in all component styles: `style={{ fontFamily }}`.
 - [ ] Create `src/DemoVideo.tsx` composing all scenes with `<Sequence>`
 - [ ] Register composition in `src/Root.tsx`
 - [ ] Scrub through full video in Studio — check timing, visual flow
-- [ ] Adjust `trimBefore` / `trimAfter` on video clips for best pacing
 
 ### Phase 4 — Polish (optional)
 - [ ] Add fade transitions between scenes using `@remotion/transitions`
@@ -483,7 +489,7 @@ npx remotion render MLAutopilotDemo out/demo.mp4 --codec=h264 --crf=18
 
 ### Verify Checklist
 - [ ] File plays in VLC / QuickTime without issues
-- [ ] Duration is between 2:30 and 3:00
+- [ ] Duration is exactly 3:00 (5400 frames at 30 fps)
 - [ ] Terminal footage is clearly legible (text is readable)
 - [ ] No black frames or visual glitches at scene boundaries
 - [ ] All text is in English
