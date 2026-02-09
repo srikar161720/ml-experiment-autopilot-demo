@@ -50,7 +50,7 @@ The video is 3 minutes 0 seconds (5,400 frames at 30 fps), using the full 3-minu
 - **`@remotion/media`** — Embedding `.mp4` terminal recordings via `<Video>`
 - **`@remotion/google-fonts`** — Loading Inter font
 - **`@remotion/transitions`** — Fade transitions between scenes (optional polish)
-- **Remotion Agent Skills** — Installed to `.claude/skills/` for AI-assisted development
+- **Remotion Agent Skills** — Installed to `.gemini/skills/`, `.agent/skills/`, and `.agents/skills/` for AI-assisted development
 - **Render:** `npx remotion render MLAutopilotDemo out/demo.mp4`
 
 ---
@@ -95,7 +95,11 @@ ml-autopilot-demo-video/
 │       ├── constants.ts                # Colors, font sizes, timing presets, frame offsets
 │       └── fonts.ts                    # Font loading (Inter via @remotion/google-fonts)
 │
-└── .claude/
+└── .agent/
+│   └── skills/
+└── .agents/
+│   └── skills/
+└── .gemini/
     └── skills/                         # Remotion Agent Skills (auto-installed)
 ```
 
@@ -324,7 +328,7 @@ All clips have been manually pre-trimmed and are ready to use as-is. No addition
 
 ## 8. Remotion Technical Reference
 
-Concise cheat-sheet for the APIs used in this project. For full details, see the skill files in `.claude/skills/`.
+Concise cheat-sheet for the APIs used in this project. For full details, see the skill files in `.gemini/skills/`, `.agent/skills/`, and `.agent/skills/`.
 
 ### Composition Registration (`src/Root.tsx`)
 
