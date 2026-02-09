@@ -436,13 +436,13 @@ Use `fontFamily` in all component styles: `style={{ fontFamily }}`.
 - [x] All clips manually pre-trimmed — no additional trimming needed in Remotion
 
 ### Phase 1 — Project Setup
-- [ ] Scaffold project: `npx create-video@latest` (Blank template, TailwindCSS, Skills)
-- [ ] Install extra packages: `npx remotion add @remotion/media @remotion/google-fonts`
-- [ ] Optionally install: `npx remotion add @remotion/transitions` (for scene-to-scene fades)
-- [ ] Copy `.mp4` clips into `public/clips/`
-- [ ] Create `src/lib/constants.ts` with all design tokens from Section 4
-- [ ] Create `src/lib/fonts.ts` with Inter font loading
-- [ ] Verify Studio runs: `npm run dev`
+- [x] Scaffold project: `npx create-video@latest` (Blank template, TailwindCSS, Skills)
+- [x] Install extra packages: `npx remotion add @remotion/media @remotion/google-fonts`
+- [x] Optionally install: `npx remotion add @remotion/transitions` (for scene-to-scene fades)
+- [x] Copy `.mp4` clips into `public/clips/`
+- [x] Create `src/lib/constants.ts` with all design tokens from Section 4
+- [x] Create `src/lib/fonts.ts` with Inter font loading
+- [x] Verify Studio runs: `npm run dev`
 
 ### Phase 2 — Build Scenes (one at a time, verify each in Studio)
 - [ ] Scene 1: `TitleScene.tsx`
