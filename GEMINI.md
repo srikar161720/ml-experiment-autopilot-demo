@@ -132,8 +132,8 @@ ml-autopilot-demo-video/
 | `TEXT_MUTED` | `#888888` | Tertiary labels, timestamps |
 | `CARD_BG` | `#1e1e3a` | Card/box background |
 | `CARD_BORDER` | `#4fc3f7` at 40% opacity | Card borders |
-| `TERMINAL_BG` | `#1e1e1e` | Terminal window body |
-| `TERMINAL_BAR` | `#262626` | Terminal title bar |
+| `TERMINAL_BG` | `#202020` | Terminal window body |
+| `TERMINAL_BAR` | `#282828` | Terminal title bar |
 
 ### Typography
 
