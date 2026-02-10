@@ -445,32 +445,32 @@ Use `fontFamily` in all component styles: `style={{ fontFamily }}`.
 - [x] Verify Studio runs: `npm run dev`
 
 ### Phase 2 — Build Scenes (one at a time, verify each in Studio)
-- [ ] Scene 1: `TitleScene.tsx`
-- [ ] Scene 2: `ProblemScene.tsx` + `AnimatedBullet.tsx`
-- [ ] Scene 3: `SolutionScene.tsx`
-- [ ] Scene 4: `GeminiScene.tsx`
-- [ ] Scene 5: `CLIDemoScene.tsx` + `TerminalWindow.tsx` ⭐
-- [ ] Scene 6: `ResultsScene.tsx` + `StatCard.tsx`
-- [ ] Scene 7: `TechStackScene.tsx` + `TechBadge.tsx`
-- [ ] Scene 8: `OutroScene.tsx`
+- [x] Scene 1: `TitleScene.tsx`
+- [x] Scene 2: `ProblemScene.tsx` + `AnimatedBullet.tsx`
+- [x] Scene 3: `SolutionScene.tsx`
+- [x] Scene 4: `GeminiScene.tsx`
+- [x] Scene 5: `CLIDemoScene.tsx` + `TerminalWindow.tsx` ⭐
+- [x] Scene 6: `ResultsScene.tsx` + `StatCard.tsx`
+- [x] Scene 7: `TechStackScene.tsx` + `TechBadge.tsx`
+- [x] Scene 8: `OutroScene.tsx`
 
 ### Phase 3 — Compose & Integrate
-- [ ] Create `src/DemoVideo.tsx` composing all scenes with `<Sequence>`
-- [ ] Register composition in `src/Root.tsx`
-- [ ] Scrub through full video in Studio — check timing, visual flow
+- [x] Create `src/DemoVideo.tsx` composing all scenes with `<Sequence>`
+- [x] Register composition in `src/Root.tsx`
+- [x] Scrub through full video in Studio — check timing, visual flow
 
 ### Phase 4 — Polish (optional)
-- [ ] Add fade transitions between scenes using `@remotion/transitions`
+- [x] Add fade transitions between scenes using `@remotion/transitions`
 - [ ] Add narration audio via `<Audio>` from `@remotion/media` (if recorded)
 - [ ] Add captions via `@remotion/captions` with `createTikTokStyleCaptions()` (if narrating)
-- [ ] Fine-tune spring configs, timing, text content
-- [ ] Test full playback at 1× speed in Studio
+- [x] Fine-tune spring configs, timing, text content
+- [x] Test full playback at 1× speed in Studio
 
 ### Phase 5 — Render & Export
-- [ ] Render: `npx remotion render MLAutopilotDemo out/demo.mp4 --codec=h264`
-- [ ] Verify output: duration ≤ 3:00, resolution 1920×1080, audio (if any) plays correctly
-- [ ] Watch the full video end-to-end
-- [ ] Upload to Devpost
+- [x] Render: `npx remotion render MLAutopilotDemo out/demo.mp4 --codec=h264`
+- [x] Verify output: duration ≤ 3:00, resolution 1920×1080, audio (if any) plays correctly
+- [x] Watch the full video end-to-end
+- [x] Upload to Devpost
 
 ---
 
@@ -492,8 +492,8 @@ npx remotion render MLAutopilotDemo out/demo.mp4 --codec=h264 --crf=18
 ```
 
 ### Verify Checklist
-- [ ] File plays in VLC / QuickTime without issues
-- [ ] Duration is exactly 3:00 (5400 frames at 30 fps)
-- [ ] Terminal footage is clearly legible (text is readable)
-- [ ] No black frames or visual glitches at scene boundaries
-- [ ] All text is in English
+- [x] File plays in VLC / QuickTime without issues
+- [x] Duration is exactly 3:00 (5400 frames at 30 fps)
+- [x] Terminal footage is clearly legible (text is readable)
+- [x] No black frames or visual glitches at scene boundaries
+- [x] All text is in English
